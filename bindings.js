@@ -1,36 +1,41 @@
 // Global Objects
 var model = new Ngrams();
-var seq = new Sequencer();
+var seq = new Segmenter();
 
-
-// MIDI -> SEQUENCER
+while(window.midiBridge == undefined) { } // Wait for MIDIBridge
 
 midiBridge.init({
+    
     ready: function() {
-        
     },
     
     data: function(midiEvent) {
         if (midiEvent.statusCode == "NOTE ON") {
             if (midiEvent.data2 == 0) {
-                seq.noteOff(data1);
+                seq.noteOff(midiEvent.data1);
             } else {
-                seq.noteOn(data1);
+                seq.noteOn(midiEvent.data1);
+            }
         } else if (midiEvent.statusCode == "NOTE OFF") {
-            seq.noteOff(data1);
+            seq.noteOff(midiEvent.data1);
         }
-        console.log(midiEvent);
+        //console.log(midiEvent);
     }
+    
 });
 
 
 // SEQUENCER -> NGRAMS
 
-seq.onSequenceUpdate = function(seq) {
-    model.feed(word);
+/*seq.onNewChord = function(chord) {
+    model.feed(chord);
     updateScore();
-};
-                
+};*/
+
+seq.onNewChord = function(chord) {
+    setHTML("chord",chord.join('-'));
+}
+
 seq.onFlush = function() {
     model = new Ngrams();
 }
@@ -47,5 +52,5 @@ function updateScore() {
     candidates.forEach(function(cand) {
         scores[cand] = scores[cand] + 1;
     });
-    
+}
     

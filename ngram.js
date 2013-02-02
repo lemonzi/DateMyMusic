@@ -1,18 +1,17 @@
 // https://github.com/athoune/node-ngram
+// Adapted to work in client-side and with arrays instead of strings
+// Adapted to generate ngrams given a realtime stream
+// Keeps the last 
 
 (function(global){
 
-function cleanup(txt) {
-    return txt.replace(/(^[\\("']+)|([,:;.?!)"'|\\]+$)/, '').toLowerCase();
-}
-
-function ngram(word, min, max) {
+function ngram(arr, min, max) {
     var ngrams = [];
     word = '_' + word + '_';
     for(var i=0; i < word.length; i++) {
         for(var s=min; s <=max; s++) {
             if(i+s <= word.length) {
-                var ngram = word.substr(i,s);
+                var ngram = word.splice(i,s);
                 if(ngram != '_')
         ngrams.push(ngram);
             }
@@ -110,17 +109,6 @@ Ngrams.prototype.distance = function(other) {
         }
     });
     return distance;
-};
-
-
-global.String.prototype.tokens = function (filter) {
-    var s = this;
-    return this.split(/\s+/).map(function(word) {
-        if (filter !== undefined) {
-            return filter.call(s, word);
-        }
-        return word.toLowerCase();
-    });
 };
 
 global.ngram = ngram;
