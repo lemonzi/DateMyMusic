@@ -11,6 +11,11 @@ Keyboard['d'].bindDown(function() {
     UI.switchDebug();
 });
 
+Keyboard['r'].bindDown(function() {
+    UI.postFlush();
+    userModel.flush();
+});
+
 // SEQUENCER -> NGRAMS
 
 seq.onNewChord = function(chord) {
@@ -22,6 +27,7 @@ midiBridge.init({
     
     ready: function() {
         console.log("MIDI Engine loaded succesfully");
+        UI.ready();
     },
     
     error: function() {
@@ -48,9 +54,10 @@ midiBridge.init({
 userModel.onChartUpdate = function(chart) {
     populateDB();
     UI.setStats(userModel.chart.map(function(k){return k+' '+userModel.stats[k]}).join('<br>'));
-    UI.setResult(updateScore());
+    UI.setResult(guessLanguage());
 }
     
+    /*
 function updateScore() {
     return Object.keys(db).map(function(key) {
         return [key, userModel.distance(db[key])];
@@ -61,6 +68,7 @@ function updateScore() {
             return prev;
     },[null,-Number.MAX_VALUE])[0];
 }
+*/
 
 function populateDB() {
     var grams = userModel.chart;
@@ -76,14 +84,35 @@ Peachnote.callback = function(data) {
     var ng = Object.keys(data)[0];
     console.log('Received ngram: '+ng);
     var stats = data[ng];
-    Object.keys(stats).forEach(function(year) {
-        if (!db.hasOwnProperty(year))
+    ng = ng.replace(' ','+');
+    for (var year in stats) {
+        if (stats[year] < 4)
+            continue;
+        if (!db.hasOwnProperty(year)) {
             db[year] = new Ngrams();
-        db[year].update(ng,data[year]);
-        dbListings[ng] = 2; // listing created
-    });
-    UI.setResult(updateScore());
+            db[year].chartSize = 0;
+        }
+        db[year].update(ng,stats[year]);
+    }
+    dbListings[ng] = 2; // listing created
+    UI.setResult(guessLanguage());
 }
     
-
+/**
+ * Guess language from Ngram
+ */var distances;
+guessLanguage = function() {
+    var language = undefined;
+    var score = undefined;
+    distances = [];
+    for(var lang in db) {
+        var distance = userModel.distance(db[lang]);
+        distances.push([lang,distance]);
+        if((score == undefined || distance < score)) {
+            score = distance;
+            language = lang;
+        }
+    }
+    return language;
+};
     

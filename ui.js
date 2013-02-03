@@ -26,21 +26,28 @@
                 setHTML("stats",s);
         },
         
+        ready : function() {
+            setHTML("result","Please start playing :)");
+        },
+        
         // UI linking
         postChartSize : function(e) {
-            onChartSizeChange(e.innerHtml);
+            UI.onChartSizeChange(e.innerHtml);
         },
         
         postMinLength: function (e) {
-            onMinLengthChange(e.innterHtml);
+            UI.onMinLengthChange(e.innterHtml);
         },
         
         postMaxLength: function (e) {
-            onMaxLengthChange(e.innterHtml);
+            UI.onMaxLengthChange(e.innterHtml);
         },
         
         postFlush: function (e) {
-            onFlushRequest();
+            setHTML("result","Please start playing :)");
+            setHTML("stats","");
+            setHTML("chord","");
+            UI.onFlushRequest();
         },
         
         switchDebug : function() {

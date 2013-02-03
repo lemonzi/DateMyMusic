@@ -30,9 +30,9 @@ var Ngrams = function() {
     this.keys = [];
     this.stats = {};
     this.min = 2;
-    this.max = 6;
+    this.max = 7;
     this.chart = [];
-    this.chartSize = 10;
+    this.chartSize = 70;
     // User callbacks
     this.onChartUpdate = function(chart) {};
     // Internal stuff
@@ -60,11 +60,11 @@ Ngrams.prototype.update = function(key, count) {
     //console.log(key);
     var g = this;
     g._ranks = undefined;
-    if (g.stats[key] === undefined) {
+    if (g.stats[key] == undefined) {
         g.stats[key] = count;
         g.keys.push(key);
     } else {
-        g.stats[key] += count;
+        g.stats[key] = g.stats[key] + count;
     }
     if (g.chartSize == 0) // no charting; just break out
         return this;
@@ -90,7 +90,7 @@ Ngrams.prototype.push = function(atom) {
         var ngram = [];
         for (var j = i; j < len; j++) { // loop over the elements of the ngram
             // Change g._last[j][0] to 0 to get absolute ngrams
-            var offset = (j == i) ? (g._last[j][0]-40) : g._last[j-1].last(); // last chord value, for taking differences. 
+            var offset = (j == i) ? (g._last[j][0]-1) : g._last[j-1].last(); // last chord value, for taking differences. 
             var chord = g._last[j].diff(offset);
             ngram.push(chord);
         }
@@ -169,15 +169,16 @@ Ngrams.prototype.readLm = function(path) {
  * Distance between two Ngrams
  */
 Ngrams.prototype.distance = function(other) {
+    var distance = 0;
     var n = this;
-    var distance = n.keys.reduce(function(prev,cur) {
-        if(other.stats[cur] === undefined) {
-            return prev - n.stats[cur];
+    this.keys.forEach(function(key) {
+        if(other.stats[key] === undefined) {
+            distance += 3;
         } else {
-            return prev + other.stats[cur]);
+            distance += Math.abs(n.ranks()[key] - other.ranks()[key]);
         }
-    },0);
-    return distance / n.keys.length;
+    });
+    return distance;
 };
 
 //global.ngram = ngram;

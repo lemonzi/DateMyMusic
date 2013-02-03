@@ -242,6 +242,10 @@ a:hover {
 	padding: 30px;
 }
 
+.title {
+    margin-left: 200px;
+}
+
 .post .title {
 	padding: 7px 0px 0px 0px;
 	letter-spacing: -1px;
