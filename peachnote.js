@@ -11,8 +11,8 @@
         }
     };
             
-    client.open("GET", url, true);
-    client.send(null); 
+    //client.open("GET", url, true);
+    //client.send(null); 
     
     function parseResponse(text) {
         var data = JSON.parse(text);

@@ -10,7 +10,6 @@
         
         // Callbacks
         this.onNewChord = function(chord) {};
-        this.onFlush = function() {};
     };
     
     Segmenter.prototype.noteOn = function(note) {

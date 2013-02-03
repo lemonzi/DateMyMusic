@@ -3,8 +3,12 @@
 // Adapted to generate ngrams given a realtime stream
 // Keeps the last 
 
-(function(global){
+// UPDATE: raw adding of counts
+// PUSH: get ngrams from the buffer and add them
 
+(function(global){ 
+
+    /*
 function ngram(arr, min, max) {
     var ngrams = [];
     word = '_' + word + '_';
@@ -19,15 +23,25 @@ function ngram(arr, min, max) {
     }
     return ngrams;
 }
+*/
 
 var Ngrams = function() {
+    // Attributes
     this.keys = [];
     this.stats = {};
-    this.min = 1;
-    this.max = 4;
+    this.min = 2;
+    this.max = 6;
+    this.chart = [];
+    this.chartSize = 10;
+    // User callbacks
+    this.onChartUpdate = function(chart) {};
+    // Internal stuff
+    this._last = [];
     this._ranks = undefined;
+    return this;
 };
 
+    /*
 Ngrams.prototype.feed = function(word) {
     this._ranks = undefined;
     var g = this;
@@ -40,10 +54,44 @@ Ngrams.prototype.feed = function(word) {
         }
     });
 };
+*/
+    
+Ngrams.prototype.update = function(key, count) {
+    this._ranks = undefined;
+    if (this.stats[key] === undefined) {
+        this.stats[key] = count;
+        this.keys.push(key);
+    } else {
+        this.stats[key] += count;
+    }
+    if (g.stats[n] > g.chart[g.chart.length - 1]) {
+        g.chart[Math.min(g.chart.length, g.chartSize)-1] = n;
+        g.chart.sort(function(a,b) {
+            return g.stats[a] > g.stats[b];
+        });
+        g.onChartUpdate(g.chart);
+    }
+    return this;
+}
+    
+Ngrams.prototype.push = function(atom) {
+    if (this._last.length >= this.max)
+        this._last.shift();
+    this._last.push(atom);
+    var g = this;
+    var arr = this._last.reduceRight(function(prev,cur) {
+        prev.push(cur.diff(prev.length > 0 ? prev[prev.length-1] : 0));
+        if (prev.length > g.min)
+            g.update(prev.forEach(function(e){e.join('_')}).join(' '),1);
+        return prev;
+    },[]);
+    return this;
+}
 
 /**
  * build ngrams from a sentences, an array of words
  */
+    /*
 Ngrams.prototype.feedAll = function(words) {
     if(typeof words === 'string')
         words = words.tokens();
@@ -52,9 +100,17 @@ Ngrams.prototype.feedAll = function(words) {
         g.feed(word);
     });
 };
+*/
+    
+Ngrams.prototype.flush = function() {
+    this.keys = [];
+    this.stats = {};
+    this.chart = [];
+    return this;
+}
 
 /**
- * Sort ngram by popularity
+ * Sort all ngrams by popularity
  */
 Ngrams.prototype.ranks = function() {
     if(this._ranks === undefined) {
@@ -111,7 +167,7 @@ Ngrams.prototype.distance = function(other) {
     return distance;
 };
 
-global.ngram = ngram;
+//global.ngram = ngram;
 global.Ngrams = Ngrams;
 
 })(this);
