@@ -1,10 +1,10 @@
 Date My Music
 ===========
 
-Do you like improvisations? I once attended a concert in my conservatory by some professors. It wasn't a regular concert, because they were professors of Improvisation.
-They started playing a Fugue out of a couple of notes somebody sang. Then, a Minuet followed.
+Do you like [improvisations](http://www.youtube.com/watch?v=sZSPBk_TGaI)? I once attended a concert in my conservatory by some professors. It wasn't a regular concert, because they were professors of Improvisation.
+They started playing a Fugue out of a couple of notes somebody sang. Then, a Minuet followed. It was truly amazing.
 
-Now I wonder, would it be possible to automatically extract some metadata from improvisations that could help us understand what happens there? THe answer is yes.
+Now I wonder, would it be possible to automatically extract some metadata from improvisations that could help us understand what happens there? The answer is yes.
 
 Thanks to Peachnote's API and datasets, it is possible to query given chord sequences or melodies in a very huge dataset built by optically recognizing online, publicly availabe sheet music. From this, one can get back in which year, or in which musical works this motifs appear the most, using techniques from Natural Language Processing.
 
@@ -18,6 +18,10 @@ My approach is as follows:
 And all this runs in _realtime_, and it's pure client-side code!
 
 ## Technical details
+
+### MIDI input
+
+The MIDI data is fed to the browser through a Java applet, using a library called MidiBridge. This library fetches data from any MIDI device from the computer, so it's possible to analyze existing MIDI files by playing them back, work with MIDI keyboards or even recognize live music using an audio to MIDI converter.
 
 ### Chord segmentation
 
