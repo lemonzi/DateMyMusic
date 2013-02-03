@@ -9,9 +9,13 @@ var seq = new Segmenter();
 seq.onNewChord = function(chord) {
     setHTML("chord",chord.join('-'));
     userModel.push(chord);
-    setHTML("stats",userModel.stats);
+    //setHTML("stats",JSON.stringify(userModel.stats));
     //updateScore();
 };
+
+userModel.onChartUpdate = function(chart) {
+    setHTML("stats",JSON.stringify(chart));
+}
 
 midiBridge.init({
     
@@ -33,7 +37,7 @@ midiBridge.init({
         } else if (midiEvent.statusCode == "NOTE OFF") {
             seq.noteOff(midiEvent.data1);
         }
-        console.log(midiEvent);
+        //console.log(midiEvent);
     }
     
 });
