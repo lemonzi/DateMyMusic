@@ -1,4 +1,4 @@
-while(window.midiBridge == undefined || window.Segmenter == undefined || window.Ngrams == undefined) { } // Wait for the modules
+//while(window.midiBridge == undefined || window.Segmenter == undefined || window.Ngrams == undefined) { } // Wait for the modules
 
 // Global Objects
 var userModel = new Ngrams();
