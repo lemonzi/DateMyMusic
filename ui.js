@@ -11,7 +11,7 @@
         // Methods
         setResult : function (r) {
             setHTML("result","<h1>"+r+"</h1>");
-        }
+        },
         
         // UI linking
         postChartSize : function(e) {
@@ -29,6 +29,12 @@
         postFlush: function (e) {
             onFlushRequest();
         }
+        
+    };
+    
+    global.UI = UI;
+    
+})(this);
         
         
         

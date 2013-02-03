@@ -42,19 +42,19 @@ midiBridge.init({
 
 userModel.onChartUpdate = function(chart) {
     setHTML("stats",userModel.chart.map(function(k){return k+'   '+userModel.stats[k]}).join('<br>'));
-    setHTML("result",updateScore());
+    //setHTML("result",updateScore());
 }
 
 function updateScore() {
     var grams = userModel.chart;
     grams.forEach(function(ng) {
-        if (!dbListing.hasOwnPropery(ng)) {
+        if (!dbListings.hasOwnProperty(ng)) {
             Peachnote.bestMatch(ng).forEach(function(e) {
                 if (!db.hasOwnProperty(e.year))
                     db[e.year] = new Ngram();
                 db[e.year].update(ng,e.count);
             });
-            dbListing[ng] = true;
+            dbListings[ng] = true;
         }
     });
     return Object.keys(db).map(function(key) {

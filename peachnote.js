@@ -10,6 +10,8 @@
             parseResponse(client.responseText);
         }
     };
+    
+    var Peachnote;
             
     //client.open("GET", url, true);
     //client.send(null); 
@@ -18,5 +20,7 @@
         var data = JSON.parse(text);
         Peachnote.callback(data);
     }
+    
+    global.Peachnote = Peachnote;
     
 })(this);
