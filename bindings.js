@@ -6,10 +6,15 @@ var seq = new Segmenter();
 var db = {};
 var dbListings = {};
 
+// Keyboard bindings
+Keyboard['d'].bindDown(function() {
+    UI.switchDebug();
+});
+
 // SEQUENCER -> NGRAMS
 
 seq.onNewChord = function(chord) {
-    setHTML("chord",chord.join('-'));
+    UI.setChord(chord);
     userModel.push(chord);
 };
 
@@ -42,7 +47,7 @@ midiBridge.init({
 
 userModel.onChartUpdate = function(chart) {
     populateDB();
-    setHTML("stats",userModel.chart.map(function(k){return k+'   '+userModel.stats[k]}).join('<br>'));
+    UI.setStats(userModel.chart.map(function(k){return k+' '+userModel.stats[k]}).join('<br>'));
     UI.setResult(updateScore());
 }
     
@@ -50,11 +55,11 @@ function updateScore() {
     return Object.keys(db).map(function(key) {
         return [key, userModel.distance(db[key])];
     }).reduce(function(prev, cur) {
-        if (cur[1] < prev[1])
+        if (cur[1] > prev[1])
             return cur;
         else
             return prev;
-    },Number.MAX_VALUE)[0];
+    },[null,-Number.MAX_VALUE])[0];
 }
 
 function populateDB() {
@@ -79,4 +84,6 @@ Peachnote.callback = function(data) {
     });
     UI.setResult(updateScore());
 }
+    
+
     

@@ -169,16 +169,15 @@ Ngrams.prototype.readLm = function(path) {
  * Distance between two Ngrams
  */
 Ngrams.prototype.distance = function(other) {
-    var distance = 0;
     var n = this;
-    this.keys.forEach(function(key) {
-        if(other.stats[key] === undefined) {
-            distance += 2000;
+    var distance = n.keys.reduce(function(prev,cur) {
+        if(other.stats[cur] === undefined) {
+            return prev - n.stats[cur];
         } else {
-            distance += Math.abs(n.ranks()[key] - other.ranks()[key]);
+            return prev + other.stats[cur]);
         }
-    });
-    return distance;
+    },0);
+    return distance / n.keys.length;
 };
 
 //global.ngram = ngram;
