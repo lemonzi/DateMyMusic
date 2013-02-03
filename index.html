@@ -1,108 +1,66 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+Name       : BlackPolish 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20121026
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>Date My Music by lemonzi</title>
-  </head>
-
-  <body>
-    <a id="forkme_banner" href="https://github.com/lemonzi/DateMyMusic">View on GitHub</a>
-    <div class="shell">
-
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>Date My Music</h1>
-            <h2>My project for the Classical Music Hack Day 2013 @ Vienna</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/lemonzi/DateMyMusic/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/lemonzi/DateMyMusic/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h1>Date My Music</h1>
-
-<p>Do you like <a href="http://www.youtube.com/watch?v=sZSPBk_TGaI">improvisations</a>? I once attended a concert in my conservatory by some professors. It wasn't a regular concert, because they were professors of Improvisation.
-They started playing a Fugue out of a couple of notes somebody sang. Then, a Minuet followed. It was truly amazing.</p>
-
-<p>Now I wonder, would it be possible to automatically extract some metadata from improvisations that could help us understand what happens there? The answer is yes.</p>
-
-<p>Thanks to Peachnote's API and datasets, it is possible to query given chord sequences or melodies in a very huge dataset built by optically recognizing online, publicly availabe sheet music. From this, one can get back in which year, or in which musical works this motifs appear the most, using techniques from Natural Language Processing.</p>
-
-<p>My approach is as follows:</p>
-
-<ul>
-<li>Take a MIDI polyphonic input from the musician</li>
-<li>Try to figure out what chords are being played, given a bunch of notes</li>
-<li>Train a lingustic model that summarizes how the musician plays in terms of chord progression and melodic turns</li>
-<li>Query the database and check the model against all possible matches to determine what style is the musician closest to</li>
-</ul><p>And all this runs in <em>realtime</em>, and it's pure client-side code!</p>
-
-<h2>Technical details</h2>
-
-<h3>MIDI input</h3>
-
-<p>The MIDI data is fed to the browser through a Java applet, using a library called MidiBridge. This library fetches data from any MIDI device from the computer, so it's possible to analyze existing MIDI files by playing them back, work with MIDI keyboards or even recognize live music using an audio to MIDI converter.</p>
-
-<h3>Chord segmentation</h3>
-
-<p>To segment chords and notes, I've decided to aggregate all notes that are pressed on the keyboard until there is none pressed, and then release all of them together. This makes sense, because it's impossible to press all notes from a chord at the very same time, and in music there are usually short empty intervals in between note or chord changes. 
-Its drawback is that if the musician is playing legato it's very likely that the notes will get mixed together. </p>
-
-<h3>Model building</h3>
-
-<p>The model that the Peachnote database uses and that I've adopted for representing the musician style relies on N-gram statistics. It stores all combinations of successive events (notes or chords) that have been played, but instead of recording them separately -which would take an enormous amount of memory- only stores the histogram of it.
-Every time a new chord comes in, the model is updated and a popularity chart is revised, which always holds the most popular sequences to avoid continuously searching the entire space.</p>
-
-<h3>Corpus caching</h3>
-
-<p>To avoid making many queries to the API for each chord that comes in, all queried sequences are stored in a local database, even if they go out of the top chart. There is an associative list that stores a collection of N-gram statistical models, very similar to the one from the musician, indexed by the item we want to identify -in the demo, historical year-. Inside this model there is the histogram, that holds information about all sequences related to the item. A list with all indexed patterns is also maintained to know when to skip the queries.</p>
-
-<h3>Scoring system</h3>
-
-<p>Whenever the top chart from the musician model changes, all patterns on it are matched against the models of all the available items. The metric is still to be defined.</p>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/lemonzi">lemonzi</a> can be found on <a href="https://github.com/lemonzi/DateMyMusic">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
-    </div>
-
-    
-  </body>
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Date My Music</title>
+        <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css' />
+        <link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
+        <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+        <script src="lib/MidiBridge.js"></script>
+    </head>
+    <body onselectstart="return false;">
+        <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+        <script src="utils.js"></script>
+        <script src="ngram.js"></script>
+        <script src="peachnote.js"></script>
+        <script src="segmenter.js"></script>
+        <script src="ui.js"></script>
+        <script src="bindings.js"></script>
+<div id="wrapper">
+	<div id="header-wrapper">
+		<div id="header" class="container">
+			<div id="logo">
+				<h1><a href="#">Date My Music</a></h1>
+			</div>
+			<div id="menu">
+				<ul>
+					<li class="current_page_item"><a href="#">Homepage</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="http://github.com/lemonzi/DateMyMusic">Code</a></li>
+					<li><a href="http://lemonzi.wordpress.com">Contact</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="page">
+		<div class="post">
+			<h2 class="title"><a href="#">Date My Music! </a></h2>
+			<div class="entry">
+                <div id="result"></div>
+                <div id="chord"></div>
+                <div id="stats"></div>
+            </div>
+		</div>
+	</div>
+</div>
+	<!-- end #page --> 
+<div id="footer">
+	<p>Copyright (c) 2012 Sitename.com. All rights reserved. Images by <a href="http://fotogrph.com/">Fotogrph</a>. Design by <a href="http://www.freecsstemplates.org">FCT</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
 </html>
