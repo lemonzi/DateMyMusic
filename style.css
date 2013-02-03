@@ -129,6 +129,10 @@ a:hover {
 	margin: 0px auto;
 }
 
+#result {
+    font-size: 70px;
+}
+
 /* Search */
 
 #search {

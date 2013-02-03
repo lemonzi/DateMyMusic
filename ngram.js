@@ -41,7 +41,7 @@ var Ngrams = function() {
     return this;
 };
 
-    /*
+/*
 Ngrams.prototype.feed = function(word) {
     this._ranks = undefined;
     var g = this;
@@ -90,7 +90,7 @@ Ngrams.prototype.push = function(atom) {
         var ngram = [];
         for (var j = i; j < len; j++) { // loop over the elements of the ngram
             // Change g._last[j][0] to 0 to get absolute ngrams
-            var offset = (j == i) ? g._last[j][0] : g._last[j-1].last(); // last chord value, for taking differences. 
+            var offset = (j == i) ? (g._last[j][0]-40) : g._last[j-1].last(); // last chord value, for taking differences. 
             var chord = g._last[j].diff(offset);
             ngram.push(chord);
         }

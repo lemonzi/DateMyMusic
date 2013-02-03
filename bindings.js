@@ -41,22 +41,12 @@ midiBridge.init({
 // NGRAMS -> SCORER
 
 userModel.onChartUpdate = function(chart) {
+    populateDB();
     setHTML("stats",userModel.chart.map(function(k){return k+'   '+userModel.stats[k]}).join('<br>'));
-    //setHTML("result",updateScore());
+    UI.setResult(updateScore());
 }
-
+    
 function updateScore() {
-    var grams = userModel.chart;
-    grams.forEach(function(ng) {
-        if (!dbListings.hasOwnProperty(ng)) {
-            Peachnote.bestMatch(ng).forEach(function(e) {
-                if (!db.hasOwnProperty(e.year))
-                    db[e.year] = new Ngram();
-                db[e.year].update(ng,e.count);
-            });
-            dbListings[ng] = true;
-        }
-    });
     return Object.keys(db).map(function(key) {
         return [key, userModel.distance(db[key])];
     }).reduce(function(prev, cur) {
@@ -65,5 +55,28 @@ function updateScore() {
         else
             return prev;
     },Number.MAX_VALUE)[0];
+}
+
+function populateDB() {
+    var grams = userModel.chart;
+    grams.forEach(function(ng) {
+        if (!dbListings.hasOwnProperty(ng)) {
+            dbListings[ng] = 1; // awaiting response
+            Peachnote.query(ng);
+        }
+    });
+}
+                
+Peachnote.callback = function(data) { 
+    var ng = Object.keys(data)[0];
+    console.log('Received ngram: '+ng);
+    var stats = data[ng];
+    Object.keys(stats).forEach(function(year) {
+        if (!db.hasOwnProperty(year))
+            db[year] = new Ngrams();
+        db[year].update(ng,data[year]);
+        dbListings[ng] = 2; // listing created
+    });
+    UI.setResult(updateScore());
 }
     
