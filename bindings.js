@@ -3,19 +3,15 @@ while(window.midiBridge == undefined || window.Segmenter == undefined || window.
 // Global Objects
 var userModel = new Ngrams();
 var seq = new Segmenter();
+var db = {};
+var dbListings = {};
 
 // SEQUENCER -> NGRAMS
 
 seq.onNewChord = function(chord) {
     setHTML("chord",chord.join('-'));
     userModel.push(chord);
-    //setHTML("stats",JSON.stringify(userModel.stats));
-    //updateScore();
 };
-
-userModel.onChartUpdate = function(chart) {
-    setHTML("stats",JSON.stringify(chart));
-}
 
 midiBridge.init({
     
@@ -41,18 +37,33 @@ midiBridge.init({
     }
     
 });
-                
+
 // NGRAMS -> SCORER
+
+userModel.onChartUpdate = function(chart) {
+    setHTML("stats",userModel.chart.map(function(k){return k+'   '+userModel.stats[k]}).join('<br>'));
+    setHTML("result",updateScore());
+}
 
 function updateScore() {
     var grams = userModel.chart;
-    var candidates = [];
     grams.forEach(function(ng) {
-        candidates.push(API.bestMatch(ng));
+        if (!dbListing.hasOwnPropery(ng)) {
+            Peachnote.bestMatch(ng).forEach(function(e) {
+                if (!db.hasOwnProperty(e.year))
+                    db[e.year] = new Ngram();
+                db[e.year].update(ng,e.count);
+            });
+            dbListing[ng] = true;
+        }
     });
-    var scores = {};
-    candidates.forEach(function(cand) {
-        scores[cand] = scores[cand] + 1;
-    });
+    return Object.keys(db).map(function(key) {
+        return [key, userModel.distance(db[key])];
+    }).reduce(function(prev, cur) {
+        if (cur[1] < prev[1])
+            return cur;
+        else
+            return prev;
+    },Number.MAX_VALUE)[0];
 }
     

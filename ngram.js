@@ -55,7 +55,7 @@ Ngrams.prototype.feed = function(word) {
     });
 };
 */
-    
+
 Ngrams.prototype.update = function(key, count) {
     //console.log(key);
     var g = this;
@@ -66,29 +66,38 @@ Ngrams.prototype.update = function(key, count) {
     } else {
         g.stats[key] += count;
     }
-    if ( (g.chart.length == 0) || ( g.stats[key] > g.stats[g.chart.last()] ) ) {
-        g.chart[Math.min(g.chart.length, g.chartSize-1)] = key;
-        g.chart.sort(function(a,b) {
-            return g.stats[a] > g.stats[b];
-        });
-        g.onChartUpdate(g.chart);
+    if (g.chartSize == 0) // no charting; just break out
+        return this;
+    if (g.chart.length < g.chartSize) { // chart not full yet!
+        g.chart.push(key);
+    } else if ( g.stats[key] > g.stats[g.chart.last()] && g.chart.indexOf(key) == -1 ) { // new ngram!
+        g.chart[g.chartSize-1] = key;
     }
+    g.chart.sort(function(a,b) {      // keep sorting
+        return g.stats[a] < g.stats[b];
+    });
+    g.onChartUpdate(g.chart); // callback
     return this;
 }
     
 Ngrams.prototype.push = function(atom) {
-    if (this._last.length >= this.max)
+    if (this._last.length >= this.max) // buffer full; dequeue
         this._last.shift();
-    this._last.push(atom);
+    this._last.push(atom); // push new item
     var g = this;
-    this._last.reduce(function(prev,cur) {
-        var offset = prev.length > 0 ? g._last[prev.length-1].last() : 0;
-        prev.push(cur.diff(offset));
-        console.log(JSON.stringify(prev));
-        if (prev.length >= g.min)
-            g.update(prev.map(function(e){return e.join('_');}).join('+'),1);
-        return prev;
-    },[]);
+    var len = this._last.length;
+    for (var i = 0; i < len; i++) {  // loop over the initial item of the ngram
+        var ngram = [];
+        for (var j = i; j < len; j++) { // loop over the elements of the ngram
+            // Change g._last[j][0] to 0 to get absolute ngrams
+            var offset = (j == i) ? g._last[j][0] : g._last[j-1].last(); // last chord value, for taking differences. 
+            var chord = g._last[j].diff(offset);
+            ngram.push(chord);
+        }
+        //console.log(JSON.stringify(ngram));
+        if (ngram.length >= g.min)
+            g.update(ngram.map(function(e){return e.join('_');}).join('+'),1); // register only if it's long enough
+    }
     return this;
 }
 
