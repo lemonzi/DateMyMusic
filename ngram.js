@@ -30,9 +30,15 @@ var Ngrams = function() {
     this.keys = [];
     this.stats = {};
     this.min = 2;
+<<<<<<< HEAD
     this.max = 7;
     this.chart = [];
     this.chartSize = 70;
+=======
+    this.max = 6;
+    this.chart = [];
+    this.chartSize = 10;
+>>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
     // User callbacks
     this.onChartUpdate = function(chart) {};
     // Internal stuff
@@ -60,6 +66,7 @@ Ngrams.prototype.update = function(key, count) {
     //console.log(key);
     var g = this;
     g._ranks = undefined;
+<<<<<<< HEAD
     if (g.stats[key] == undefined) {
         g.stats[key] = count;
         g.keys.push(key);
@@ -71,6 +78,19 @@ Ngrams.prototype.update = function(key, count) {
     if (g.chart.length < g.chartSize  && g.chart.indexOf(key) == -1) { // chart not full yet
         g.chart.push(key);
     } else if ( g.stats[key] > g.stats[g.chart.last()] && g.chart.indexOf(key) == -1 ) { // new ngram
+=======
+    if (g.stats[key] === undefined) {
+        g.stats[key] = count;
+        g.keys.push(key);
+    } else {
+        g.stats[key] += count;
+    }
+    if (g.chartSize == 0) // no charting; just break out
+        return this;
+    if (g.chart.length < g.chartSize  && g.chart.indexOf(key) == -1) { // chart not full yet!
+        g.chart.push(key);
+    } else if ( g.stats[key] > g.stats[g.chart.last()] && g.chart.indexOf(key) == -1 ) { // new ngram!
+>>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
         g.chart[g.chartSize-1] = key;
     }
     g.chart.sort(function(a,b) {      // keep sorting
@@ -90,7 +110,11 @@ Ngrams.prototype.push = function(atom) {
         var ngram = [];
         for (var j = i; j < len; j++) { // loop over the elements of the ngram
             // Change g._last[j][0] to 0 to get absolute ngrams
+<<<<<<< HEAD
             var offset = (j == i) ? (g._last[j][0]-1) : g._last[j-1].last(); // last chord value, for taking differences. 
+=======
+            var offset = (j == i) ? (g._last[j][0]-40) : g._last[j-1].last(); // last chord value, for taking differences. 
+>>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
             var chord = g._last[j].diff(offset);
             ngram.push(chord);
         }
@@ -173,7 +197,11 @@ Ngrams.prototype.distance = function(other) {
     var n = this;
     this.keys.forEach(function(key) {
         if(other.stats[key] === undefined) {
+<<<<<<< HEAD
             distance += 3;
+=======
+            distance += 2000;
+>>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
         } else {
             distance += Math.abs(n.ranks()[key] - other.ranks()[key]);
         }
