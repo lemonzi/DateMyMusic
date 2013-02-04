@@ -1,10 +1,7 @@
 (function(global) {
     
-<<<<<<< HEAD
     var debugEnabled = false;
     
-=======
->>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
     var UI = {
         
         // callbacks
@@ -15,7 +12,6 @@
         
         // Methods
         setResult : function (r) {
-<<<<<<< HEAD
             if (r != undefined && r != null)
                 setHTML("result",r);
         },
@@ -32,14 +28,10 @@
         
         ready : function() {
             setHTML("result","Please start playing :)");
-=======
-            setHTML("result","<h1>"+r+"</h1>");
->>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
         },
         
         // UI linking
         postChartSize : function(e) {
-<<<<<<< HEAD
             UI.onChartSizeChange(e.innerHtml);
         },
         
@@ -66,21 +58,6 @@
             } else {
                 debugEnabled = true;
             }
-=======
-            onChartSizeChange(e.innerHtml);
-        },
-        
-        postMinLength: function (e) {
-            onMinLengthChange(e.innterHtml);
-        },
-        
-        postMaxLength: function (e) {
-            onMaxLengthChange(e.innterHtml);
-        },
-        
-        postFlush: function (e) {
-            onFlushRequest();
->>>>>>> f68ce82b09fa833fe9fcc941a1f9cc6190f1a909
         }
         
     };
