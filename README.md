@@ -1,5 +1,4 @@
 Date My Music
-Let the computer predict which year a MIDI composition you play could have ben written in: http://lemonzi.github.com/DateMyMusic
 ===========
 
 Do you like [improvisations](http://www.youtube.com/watch?v=sZSPBk_TGaI)? I once attended a concert in my conservatory by some professors. It wasn't a regular concert, because they were professors of Improvisation.
@@ -18,4 +17,4 @@ My approach is as follows:
 
 All this runs in _realtime_, and it's pure client-side code!
 
-More technical details on the web.
+More technical details at the [live app](http://lemonzi.github.com/DateMyMusic/about.html)
