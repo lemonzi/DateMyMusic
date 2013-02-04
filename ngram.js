@@ -68,9 +68,9 @@ Ngrams.prototype.update = function(key, count) {
     }
     if (g.chartSize == 0) // no charting; just break out
         return this;
-    if (g.chart.length < g.chartSize  && g.chart.indexOf(key) == -1) { // chart not full yet!
+    if (g.chart.length < g.chartSize  && g.chart.indexOf(key) == -1) { // chart not full yet
         g.chart.push(key);
-    } else if ( g.stats[key] > g.stats[g.chart.last()] && g.chart.indexOf(key) == -1 ) { // new ngram!
+    } else if ( g.stats[key] > g.stats[g.chart.last()] && g.chart.indexOf(key) == -1 ) { // new ngram
         g.chart[g.chartSize-1] = key;
     }
     g.chart.sort(function(a,b) {      // keep sorting
