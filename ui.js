@@ -13,7 +13,7 @@
         // Methods
         setResult : function (r) {
             if (r != undefined && r != null)
-                setHTML("result",r);
+                setHTML("result","<a href=http://en.wikipedia.org/wiki/"+r+" target=\"_blank\">"+r+"</a>");
         },
         
         setChord : function(c) {
