@@ -21,11 +21,14 @@ More technical details at the [live app](http://lemonzi.github.com/DateMyMusic/a
 
 FAQ
 ===========
-* Why do you have 2 duplicate branches?
+### Why do you have 2 duplicate branches?
+
 Since all the code runs at the client, there is no need for having a server. Therefore, I'm using Github itself as the content server for the live app with Github Pages. This implies that the branch gh-pages is the production version, and I'm using the master branch for developing. 
 
-* Some weird years keep appearing
+### Some weird years keep appearing
+
 Yes, I know. It's easy to generate uncommon chords, and the scoring system fails when the response from the database is small. Gotta fix it someday.
 
-* I'm playing some chords from [put your favorite band here] and it tells me it's from the XVIII century. What's wrong?
+### I'm playing some chords from [put your favorite band here] and it tells me it's from the XVIII century. What's wrong?
+
 That's because the Peachnote database, where the music is matched against, indexes only classical music.
